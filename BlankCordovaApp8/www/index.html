@@ -1,0 +1,191 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+
+    <link href="css/onsenui.css" rel="stylesheet" />
+    <link href="css/onsen-css-components.min.css" rel="stylesheet" />
+    <script src="scripts/jquery.min.js"></script>
+    <script src="scripts/onsenui.min.js"></script>
+
+    <style>
+        @font-face {
+            font-family: 'IRAN Sans Bold';
+            src: url('fonts/IRAN Sans Bold.ttf') format('truetype');
+        }
+
+        @font-face {
+            font-family: 'IRAN Sans';
+            src: url('fonts/IRAN Sans.ttf') format('truetype');
+        }
+
+        * {
+            font-family: 'IRAN Sans';
+        }
+
+        .center, .title {
+            font-family: 'IRAN Sans Bold'
+        }
+    </style>
+
+</head>
+<body>
+
+    <ons-page>
+        <ons-toolbar>
+            <div class="center">333شرکت پیشران انرژی</div>
+        </ons-toolbar>
+
+        <ons-card>
+
+            <img src="images/favicon.ico" alt="Pishrun Logo" style="width: auto" />
+
+            <div class="title" style="text-align:center">
+                ورود به سیستم
+            </div>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <p>
+                    <ons-input id="username" modifier="underbar" placeholder="نام کاربری" float></ons-input>
+                </p>
+                <p>
+                    <ons-input id="password" modifier="underbar" type="password" placeholder="کلمه عبور" float></ons-input>
+                </p>
+                <p>
+                    <label class="left">
+                        <ons-checkbox input-id="check-2"></ons-checkbox>
+                    </label>
+                    <label for="check-2" class="center">
+                        بخاطر بسپار
+                    </label>
+                </p>
+                <p style="margin-top: 30px;">
+                    <ons-button onclick="login()">
+
+                        <ons-icon icon="md-face"></ons-icon>
+
+                        ورود
+                    </ons-button>
+                </p>
+
+                <ons-progress-bar></ons-progress-bar>
+
+
+            </div>
+        </ons-card>
+
+    </ons-page>
+
+    <script>
+
+        var pid1;
+
+        // For an introduction to the Blank template, see the following documentation:
+        // http://go.microsoft.com/fwlink/?LinkID=397704
+        // To debug code on page load in cordova-simulate or on Android devices/emulators: launch your app, set breakpoints, 
+        // and then run "window.location.reload()" in the JavaScript Console.
+        (function () {
+            "use strict";
+
+            document.addEventListener('deviceready', onDeviceReady.bind(this), false);
+
+            function onDeviceReady() {
+                // Handle the Cordova pause and resume events
+                document.addEventListener('pause', onPause.bind(this), false);
+                document.addEventListener('resume', onResume.bind(this), false);
+
+                // TODO: Cordova has been loaded. Perform any initialization that requires Cordova here.
+                var parentElement = document.getElementById('deviceready');
+                var listeningElement = parentElement.querySelector('.listening');
+                var receivedElement = parentElement.querySelector('.received');
+                listeningElement.setAttribute('style', 'display:none;');
+                receivedElement.setAttribute('style', 'display:block;');
+
+
+
+                window.pushe.initialize();
+
+
+                window.pushe.getPusheId(function pidCallnack(pid) {
+                    //ons.notification.alert("pid is: " + pid);
+
+                    //console.log(pid);
+
+                    //console.log('zert');
+
+                    pid1 = pid;
+
+                    window.pushe.sendAdvancedNotifToUser(pid, "{ \"title\":\"test\", \"content\":\"sent from client\" }");
+                });
+
+
+
+                //$(document).bind('deviceready', app.onDeviceReady);
+            };
+
+            //document.addEventListener("deviceready", deviceReady, true);
+
+            function deviceReady() {
+                // window.pushe.initialize();
+
+                //ons.notification.alert('pushe inited!');
+            }
+
+
+            function onPause() {
+                // TODO: This application has been suspended. Save application state here.
+            };
+
+            function onResume() {
+                // TODO: This application has been reactivated. Restore application state here.
+                ons.notification.alert("pid is: " + pid);
+            };
+        })();
+
+
+
+        var app = {
+            posts_url: "http://your.ip.goes.here:3000/posts/",
+
+            onDeviceReady: function () {
+                console.log('Device is ready');
+                app.readPosts();
+            },
+
+            readPosts: function () {
+
+                window.pushe.isPusheInitialized(function pusheInited(result) {
+                    if (result) {
+
+                        window.pushe.getPusheId(function pidCallnack(pid) {
+                            //ons.notification.alert("pid is: " + pid);
+
+                            window.pushe.sendAdvancedNotifToUser(pid, "{ \"title\":\"test\", \"content\":\"sent from client\" }");
+                        });
+
+
+                    }
+                });
+            }
+        };
+
+        function login() {
+
+            window.pushe.sendAdvancedNotifToUser(pid1 , "{ \"title\":\"test\", \"content\":\"sent from client\" }");
+
+           // window.pushe.getPusheId(function pidCallnack(pid) {
+                //ons.notification.alert("pid is: " + pid);
+
+                //console.log(pid);
+
+                //console.log('zert');
+
+               
+            ////});
+
+        }
+
+    </script>
+
+</body>
+
+</html>
